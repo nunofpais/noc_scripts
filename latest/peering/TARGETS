@@ -1,0 +1,36 @@
+load("@fbcode_macros//build_defs:python_binary.bzl", "python_binary")
+load("@fbcode_macros//build_defs:python_library.bzl", "python_library")
+load("//antlir/fbpkg:fbpkg.bzl", "fbpkg")
+
+python_binary(
+    name = "peering",
+    main_src = "peering.py",
+    deps = [
+        "fbsource//third-party/pypi/termcolor:termcolor",
+        ":peering_lib",
+    ],
+)
+
+python_library(
+    name = "peering_lib",
+    srcs = [
+        "peering_dbquery.py",
+        "peering_functions.py",
+    ],
+    deps = [
+        "fbsource//third-party/pypi/termcolor:termcolor",
+        "//analytics/bamboo:lite",
+        "//libfb/py:thrift",
+        "//nettools/skynet/if:query-py",
+        "//nettools/skynet/if:skynet-py",
+        "//servicerouter/client/python/srproxy:srproxy",
+    ],
+)
+
+fbpkg.builder(
+    name = "scripts.nunopais.peering",
+    fail_on_redundant_configerator_fbpkg = False,
+    path_actions = {
+        "peering.par": ":peering",
+    },
+)

@@ -1,0 +1,8 @@
+load("@fbcode_macros//build_defs:python_binary.bzl", "python_binary")
+
+python_binary(
+    name = "test",
+    main_src = "test.py",
+    deps = [
+    ],
+)

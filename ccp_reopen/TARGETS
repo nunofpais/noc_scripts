@@ -1,0 +1,38 @@
+load("@fbcode_macros//build_defs:python_binary.bzl", "python_binary")
+load("@fbcode_macros//build_defs:python_library.bzl", "python_library")
+load("//antlir/fbpkg:fbpkg.bzl", "fbpkg")
+
+oncall("snoe")
+
+python_binary(
+    name = "test2",
+    srcs = ["test2.py"],
+    main_module = "scripts.nunopais.test2.test2",
+    deps = [
+        ":test2_lib",
+    ],
+)
+
+python_library(
+    name = "test2_lib",
+    srcs = [
+        "cases2.py",
+        "employees2.py",
+        "tickets2.py",
+    ],
+    deps = [
+        "fbsource//third-party/pypi/termcolor:termcolor",
+        "//analytics/bamboo:lite",
+        "//ens/noc_email/noc_to_ds:noc-py",
+        "//ens/noc_email/noc_to_ds:noc_ds_executer",
+        "//libfb/py:employee",
+    ],
+)
+
+fbpkg.builder(
+    name = "test",
+    fail_on_redundant_configerator_fbpkg = False,
+    path_actions = {
+        "test2.par": ":test2",
+    },
+)

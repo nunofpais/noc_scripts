@@ -1,0 +1,39 @@
+load("@fbcode_macros//build_defs:python_binary.bzl", "python_binary")
+load("@fbcode_macros//build_defs:python_library.bzl", "python_library")
+load("//antlir/fbpkg:fbpkg.bzl", "fbpkg")
+
+python_binary(
+    name = "mna",
+    main_src = "mna.py",
+    deps = [
+        "fbsource//third-party/pypi/termcolor:termcolor",
+        ":mna_lib",
+    ],
+)
+
+python_library(
+    name = "mna_lib",
+    srcs = [
+        "mna_dbquery.py",
+        "mna_functions.py",
+    ],
+    deps = [
+        "fbsource//third-party/pypi/termcolor:termcolor",
+        "//analytics/bamboo:lite",
+        "//libfb/py:employee",
+        "//libfb/py:thrift",
+        "//nettools/skynet/if:query-py",
+        "//nettools/skynet/if:skynet-py",
+        "//servicerouter/client/python/srproxy:srproxy",
+        "//ti/platform/fna/lib:bgp",
+        "//ti/platform/fnacli/cmds:glb",
+    ],
+)
+
+fbpkg.builder(
+    name = "scripts.nunopais.mna",
+    fail_on_redundant_configerator_fbpkg = False,
+    path_actions = {
+        "mna.par": ":mna",
+    },
+)
