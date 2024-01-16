@@ -1,0 +1,11 @@
+load("@fbcode_macros//build_defs:python_binary.bzl", "python_binary")
+
+python_binary(
+    name = "circuit",
+    main_src = "circuit.py",
+    deps = [
+        "//libfb/py/thrift_clients:skynet_thrift_client",
+        "//nettools/skynet/if:query-py",
+    ],
+)
+
